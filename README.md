@@ -1,8 +1,16 @@
-#1
-Вывести отсортированный в алфавитном порядке список имен пользователей в файле passwd (вам понадобится grep).
-Решение:
-labex:project/ $ grep -o '^[^:]*' /etc/passwd | sort
-Ответ:
+# Лабораторная работа: Работа с командной строкой Linux
+
+## Задача 1
+
+**Условие:** Вывести отсортированный в алфавитном порядке список имен пользователей в файле `passwd`.
+
+**Решение:**
+```bash
+grep -o '^[^:]*' /etc/passwd | sort
+```
+
+**Результат:**
+```
 _apt
 avahi
 backup
@@ -38,44 +46,80 @@ tcpdump
 usbmux
 uucp
 www-data
+```
+
+---
 
 ## Задача 2
 
-Вывести данные /etc/protocols в отформатированном и отсортированном порядке для 5 наибольших портов, как показано в примере ниже:
+**Условие:** Вывести данные `/etc/protocols` в отформатированном и отсортированном порядке для 5 наибольших портов.
 
+**Пример вывода:**
 ```
-[root@localhost etc]# cat /etc/protocols ...
 142 rohc
 141 wesp
 140 shim6
 139 hip
 138 manet
 ```
-Решение:
-labex:project/ $ grep -v '^#' /etc/protocols | awk 'NF > 0 {print $2, $1}' | sort -nr | head -5 
-Ответ:
+
+**Решение:**
+```bash
+grep -v '^#' /etc/protocols | awk 'NF > 0 {print $2, $1}' | sort -nr | head -5
+```
+
+**Результат:**
+```
 142 rohc
 141 wesp
 140 shim6
 139 hip
 138 manet
+```
+
+---
 
 ## Задача 3
 
-Написать программу banner средствами bash для вывода текстов, как в следующем примере (размер баннера должен меняться!):
+**Условие:** Написать программу `banner` средствами bash для вывода текстов с изменяемым размером баннера.
 
+**Пример работы:**
 ```
 [root@localhost ~]# ./banner "Hello from RTU MIREA!"
 +-----------------------+
 | Hello from RTU MIREA! |
 +-----------------------+
 ```
-Решение:
-labex:project/ $ nano banner
-labex:project/ $ chmod +x banner
-labex:project/ $ ./banner Hello\ from\ RTU\ MIREA\! 
+
+**Решение:**
+
+Создание скрипта:
+```bash
+nano banner
+chmod +x banner
+```
+
+Содержимое `banner`:
+```bash
+#!/bin/bash
+
+text="$*"
+len=${#text}
+line=$(printf '+%*s+' "$((len + 2))" "" | tr ' ' '-')
+
+echo "$line"
+echo "| $text |"
+echo "$line"
+```
+
+**Запуск:**
+```bash
+./banner Hello from RTU MIREA!
+```
+
+**Результат:**
+```
 +-----------------------+
 | Hello from RTU MIREA! |
 +-----------------------+
-
-
+```
