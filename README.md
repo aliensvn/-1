@@ -123,3 +123,46 @@ echo "$line"
 | Hello from RTU MIREA! |
 +-----------------------+
 ```
+## Задача 4
+**Условие:** Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
+**Пример работы для hello.c:**
+
+```
+h hello include int main n printf return stdio void world
+```
+**Решение:**
+
+Создание скрипта:
+```bash
+nano 4task
+chmod +x 4task
+```
+Создание файла:
+```bash
+nano hello.c
+```
+``` C
+#include <stdio.h>
+
+int main(void) {
+    printf("Hello, world!\n");
+    return 0;
+}
+```
+Содержимое :
+```bash
+!/bin/bash
+grep -oE '[a-zA-Z_][a-zA-Z0-9_]*' "$1" | sort -u | tr '\n' ' '
+echo
+```
+
+**Запуск:**
+```bash
+chmod +x 4task
+./4task hello.c
+```
+
+**Результат:**
+```
+h Hello include int main n printf return stdio void world
+```
