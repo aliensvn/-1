@@ -135,7 +135,6 @@ h hello include int main n printf return stdio void world
 Создание скрипта:
 ```bash
 nano 4task
-chmod +x 4task
 ```
 Создание файла:
 ```bash
@@ -165,4 +164,88 @@ chmod +x 4task
 **Результат:**
 ```
 h Hello include int main n printf return stdio void world
+```
+## Задача 5
+**Условие:** Написать программу для регистрации пользовательской команды (правильные права доступа и копирование в /usr/local/bin).
+
+Например, пусть программа называется reg:
+```
+./reg banner
+```
+**Решение:**
+Создание скрипта:
+```bash
+nano reg
+``` 
+``` bash
+#!/bin/bash
+# Регистрация пользовательской команды в /usr/local/bin
+
+if [ $# -ne 1 ]; then
+    echo "Использование: $0 <файл_команды>" >&2
+    exit 1
+fi
+
+file="$1"
+
+if [ ! -f "$file" ]; then
+    echo "Ошибка: файл '$file' не найден" >&2
+    exit 1
+fi
+
+chmod 755 "$file"
+sudo cp "$file" /usr/local/bin/
+echo "Команда '$(basename "$file")' зарегистрирована в /usr/local/bin"
+```
+**Запуск:**
+chmod +x reg
+./reg banner
+**Результат:**
+```
+Команда 'banner' зарегистрирована в /usr/local/bin
+```
+## Задача 6
+**Условие:** Написать программу для проверки наличия комментария в первой строке файлов с расширением c, js и py.
+**Решение:**
+Создание скрипта:
+nano check_comment.sh
+Содержимое:
+#!/bin/bash
+dir="${1:-.}"
+
+find "$dir" -type f \( -name '*.c' -o -name '*.js' -o -name '*.py' \) | while read -r file; do
+    first_line=$(head -n 1 "$file")
+    case "$first_line" in
+        //*|/\**|\#*)
+            echo "[+] $file — комментарий есть"
+            ;;
+        *)
+            echo "[-] $file — комментария нет"
+            ;;
+    esac
+done
+Создаём тестовые файлы:
+``` bash
+# С комментарием
+echo '// C comment
+int main() { return 0; }' > test_comment.c
+
+echo '// JS comment
+console.log("Hi");' > test_comment.js
+
+echo '# Python comment
+print("Hi")' > test_comment.py
+
+# Без комментария
+echo 'print("No comment")' > test_nocomment.py
+```
+Запуск:
+chmod +x check_comment.sh
+./check_comment.sh .
+**Результат:**
+```
+[+] ./test_comment.c — комментарий есть
+[+] ./test_comment.js — комментарий есть
+[+] ./test_comment.py — комментарий есть
+[-] ./test_nocomment.py — комментария нет
 ```
